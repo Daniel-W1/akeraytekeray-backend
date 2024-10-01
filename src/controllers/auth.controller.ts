@@ -20,6 +20,7 @@ export class AuthController {
 
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      console.log('ok here');
       const userData: User = req.body;
       const { cookie, findUser } = await this.auth.login(userData);
 

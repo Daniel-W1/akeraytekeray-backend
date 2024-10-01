@@ -3,7 +3,7 @@ import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
 import { SECRET_KEY } from '@config';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
@@ -16,15 +16,18 @@ export class AuthService {
     const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
+    const findUserByPhone: User = await this.users.findUnique({ where: { phone: userData.phone } });
+    if (findUserByPhone) throw new HttpException(409, `This phone ${userData.phone} already exists`);
+
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: Promise<User> = this.users.create({ data: { ...userData, password: hashedPassword } });
 
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
-    const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
-    if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+  public async login(userData: LoginUserDto): Promise<{ cookie: string; findUser: User }> {
+    const findUser: User = await this.users.findUnique({ where: { phone: userData.phone } });
+    if (!findUser) throw new HttpException(409, `This phone ${userData.phone} was not found`);
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
     if (!isPasswordMatching) throw new HttpException(409, 'Password·is·not·matching');
