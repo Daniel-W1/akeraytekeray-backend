@@ -1,4 +1,10 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsPhoneNumber } from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsPhoneNumber, IsEnum, IsOptional } from 'class-validator';
+
+export enum UserRole {
+  Tenant = 'tenant',
+  Host = 'host',
+  Admin = 'admin',
+}
 
 export class CreateUserDto {
   @IsEmail()
@@ -11,6 +17,9 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   public lastname: string;
+
+  @IsEnum(UserRole)
+  public role: string;
 
   @IsString()
   @IsNotEmpty()
@@ -36,9 +45,21 @@ export class LoginUserDto {
 }
 
 export class UpdateUserDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @MinLength(6)
   @MaxLength(32)
-  public password: string;
+  public password?: string;
+
+  @IsOptional()
+  @IsString()
+  public firstname?: string;
+
+  @IsOptional()
+  @IsString()
+  public lastname?: string;
+
+  @IsOptional()
+  @IsEnum(UserRole)
+  public role?: string;
 }
