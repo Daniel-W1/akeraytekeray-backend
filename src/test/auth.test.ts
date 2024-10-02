@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import request from 'supertest';
 import App from '@/app';
@@ -15,16 +14,20 @@ describe('Testing Auth', () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
         password: 'q1w2e3r4',
+        firstname: 'Leinad',
+        lastname: 'Bekele',
+        phone: '+251972816414',
+        role: 'admin'
       };
 
       const authRoute = new AuthRoute();
-      const users = authRoute.authController.authService.users;
+      const users = authRoute.auth.auth.users;
 
       users.findUnique = jest.fn().mockReturnValue(null);
       users.create = jest.fn().mockReturnValue({
         id: 1,
         email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        password: await bcrypt.hash(userData.password, 10)
       });
 
       const app = new App([authRoute]);
@@ -37,15 +40,19 @@ describe('Testing Auth', () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
         password: 'q1w2e3r4',
+        firstname: 'Leinad',
+        lastname: 'Bekele',
+        phone: '+251972816414',
+        role: 'admin'
       };
 
       const authRoute = new AuthRoute();
-      const users = authRoute.authController.authService.users;
+      const users = authRoute.auth.auth.users;
 
       users.findUnique = jest.fn().mockReturnValue({
         id: 1,
         email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        password: await bcrypt.hash(userData.password, 10)
       });
 
       const app = new App([authRoute]);

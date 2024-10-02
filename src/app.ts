@@ -13,7 +13,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 
-export class App {
+export default class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
@@ -65,10 +65,10 @@ export class App {
         info: {
           title: 'REST API',
           version: '1.0.0',
-          description: 'Example docs',
-        },
+          description: 'Example docs'
+        }
       },
-      apis: ['swagger.yaml'],
+      apis: ['swagger.yaml']
     };
 
     const specs = swaggerJSDoc(options);

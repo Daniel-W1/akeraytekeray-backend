@@ -2,10 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
-import { HttpException } from '@exceptions/httpException';
+import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
 
-const getAuthorization = (req) => {
+const getAuthorization = (req: RequestWithUser) => {
   const coockie = req.cookies['Authorization'];
   if (coockie) return coockie;
 
@@ -13,7 +13,7 @@ const getAuthorization = (req) => {
   if (header) return header.split('Bearer ')[1];
 
   return null;
-}
+};
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {

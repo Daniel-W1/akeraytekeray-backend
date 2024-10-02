@@ -22,10 +22,42 @@ model User {
   role          Role     @default(tenant)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  // Relation 
+  housePosts HousePost[]
+}
+
+model HousePost {
+  id Int @id @default(autoincrement())
+  hostId Int
+  houseType HouseType
+  title String?
+  description String
+  street_address String
+  absolute_location String?
+  city String
+  state String
+  house_size_sqm Int
+  price Int
+  rooms Int
+  media String[]
+  available Boolean @default(true)
+
+  // Relation
+  host User @relation(fields: [hostId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
   tenant
   host
   admin
+}
+
+enum HouseType {
+  RENT 
+  SALE
+  GUEST
 }

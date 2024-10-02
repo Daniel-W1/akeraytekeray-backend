@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
-import { CreateUserDto } from '@dtos/users.dto';
-import { HttpException } from '@/exceptions/httpException';
+import { CreateUserDto, UpdateUserDto } from '@dtos/users.dto';
+import { HttpException } from '@/exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 
 @Service()
@@ -26,16 +26,28 @@ export class UserService {
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = await this.user.create({ data: { ...userData, password: hashedPassword } });
+    const createUserData: User = await this.user.create({ data: { ...userData, password: hashedPassword, role: userData.role as Role } });
     return createUserData;
   }
 
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User> {
+  public async updateUser(userId: number, userData: UpdateUserDto): Promise<User> {
+    console.log('we are here?');
     const findUser: User = await this.user.findUnique({ where: { id: userId } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-    const hashedPassword = await hash(userData.password, 10);
-    const updateUserData = await this.user.update({ where: { id: userId }, data: { ...userData, password: hashedPassword } });
+    if (userData.password) {
+      const hashedPassword = await hash(userData.password, 10);
+      userData.password = hashedPassword;
+    }
+
+    const updateUserData = await this.user.update({
+      where: { id: userId },
+      data: {
+        ...userData,
+        role: userData.role ? { set: userData.role as Role } : undefined
+      }
+    });
+
     return updateUserData;
   }
 

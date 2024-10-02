@@ -33,6 +33,12 @@
       "@utils/*": ["utils/*"]
     }
   },
+  "strict": false, 
+  "forceConsistentCasingInFileNames": false,
+  "noImplicitAny": false,
+  "strictNullChecks": false,
+  "noUnusedLocals": false,
+  "noUnusedParameters": false,
   "include": ["src/**/*.ts", "src/**/*.json", ".env"],
   "exclude": ["node_modules", "src/http", "src/logs"]
 }
