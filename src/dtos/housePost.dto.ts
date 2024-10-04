@@ -6,6 +6,14 @@ export class CreateHousePostDto {
   public hostId: number;
 
   @IsString()
+  @IsNotEmpty()
+  public hostName: string;
+
+  @IsString()
+  @IsOptional()
+  public hostProfileMedia: string;
+
+  @IsString()
   @IsOptional()
   public title?: string;
 
@@ -37,6 +45,19 @@ export class CreateHousePostDto {
   @IsString({ each: true })
   @IsNotEmpty()
   public media: string[];
+
+  @IsNumber()
+  @IsOptional()
+  public bathRooms: number;
+
+  @IsNumber()
+  @IsOptional()
+  public bedRooms: number;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  public houseRules: string[];
 
   @IsNumber()
   @IsNotEmpty()
@@ -96,6 +117,19 @@ export class UpdateHousePostDto {
   @IsString()
   @IsOptional()
   public houseType?: string;
+
+  @IsNumber()
+  @IsOptional()
+  public bathRooms: number;
+
+  @IsNumber()
+  @IsOptional()
+  public bedRooms: number;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  public houseRules: string[];
 
   @IsNumber()
   @IsOptional()

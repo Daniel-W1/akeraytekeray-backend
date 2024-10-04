@@ -30,6 +30,8 @@ model User {
 model HousePost {
   id Int @id @default(autoincrement())
   hostId Int
+  hostName String
+  hostProfileMedia String?
   houseType HouseType
   title String?
   description String
@@ -40,6 +42,9 @@ model HousePost {
   house_size_sqm Int
   price Int
   rooms Int
+  bathRooms Int?
+  bedRooms Int?
+  houseRules String[] @default([])
   media String[]
   available Boolean @default(true)
 

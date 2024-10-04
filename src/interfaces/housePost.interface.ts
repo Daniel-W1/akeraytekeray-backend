@@ -1,6 +1,8 @@
 export interface HousePost {
   id?: number;
   hostId: number;
+  hostName: string;
+  hostProfileMedia: string;
   title?: string;
   description: string;
   street_address: string;
@@ -9,6 +11,9 @@ export interface HousePost {
   state: string;
   rooms: number;
   media: string[];
+  bathRooms: number;
+  bedRooms: number;
+  houseRules: string[];
   available?: boolean;
   price: number;
   houseType: string;
