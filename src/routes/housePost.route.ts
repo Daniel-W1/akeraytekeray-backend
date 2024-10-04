@@ -34,6 +34,7 @@ export class HousePostRoute implements Routes {
     );
     this.router.get(`${this.path}/:id(\\d+)`, this.housePost.getHousePostById);
     this.router.get(`${this.path}`, this.housePost.getAllHousePosts);
+    this.router.get(`${this.path}/category/:category`, this.housePost.getHousePostsByCategory);
     this.router.delete(`${this.path}/:id(\\d+)`, this.housePost.deleteHousePost);
   }
 }

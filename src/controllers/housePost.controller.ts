@@ -62,4 +62,15 @@ export class HousePostController {
       next(error);
     }
   };
+
+  public getHousePostsByCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const category = req.params.category;
+      const housePosts: HousePost[] = await this.housePost.getHousePostsByCategory(category);
+
+      res.status(200).json({ data: housePosts, message: 'HousePosts retrieved successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

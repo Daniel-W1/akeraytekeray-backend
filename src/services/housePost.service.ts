@@ -49,4 +49,16 @@ export class HousePostService {
     const housePosts: HousePost[] = await this.housePosts.findMany();
     return housePosts;
   }
+
+  public async getHousePostsByCategory(category: string): Promise<HousePost[]> {
+    // TODO: implement proper trending
+    if (category === 'TRENDING') {
+      // take only 5 posts
+      const housePosts: HousePost[] = await this.housePosts.findMany({ orderBy: { createdAt: 'desc' }, take: 5 });
+      return housePosts;
+    }
+
+    const housePosts: HousePost[] = await this.housePosts.findMany({ where: { houseType: category as HouseType } });
+    return housePosts;
+  }
 }
