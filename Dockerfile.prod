@@ -10,7 +10,7 @@ COPY ./package.json ./package-lock.json /app/
 RUN npm install --legacy-peer-deps
 
 # Set Env
-ENV NODE_ENV development
+ENV NODE_ENV production
 
 # Copy entire dir
 COPY . ./app
