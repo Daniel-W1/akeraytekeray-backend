@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+  # TODO: consider Caddy instead for the reverse proxy
   proxy:
     container_name: proxy
     image: nginx:alpine
@@ -20,10 +21,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://root:password@localhost:3306/dev
+      DATABASE_URL: mysql://root:password@mysqpl:3306/prod
     volumes:
       - ./:/app
-      - /app/node_modules
     restart: "unless-stopped"
     networks:
       - backend
@@ -36,7 +36,7 @@ services:
     container_name: mysql
     image: mysql:5.7
     environment:
-      DATABASE_URL: mysql://root:password@localhost:3306/dev
+      DATABASE_URL: mysql://root:password@localhost:3306/prod
     ports:
       - "3306:3306"
     networks:

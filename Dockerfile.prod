@@ -1,19 +1,21 @@
-# NodeJS Version 16
-FROM node:16.18-buster-slim
-
-# Copy Dir
-COPY . ./app
+# NodeJS Version 18
+FROM node:18-alpine
 
 # Work to Dir
 WORKDIR /app
+
+COPY ./package.json ./package-lock.json /app/
 
 # Install Node Package
 RUN npm install --legacy-peer-deps
 
 # Set Env
-ENV NODE_ENV production
+ENV NODE_ENV development
 
-EXPOSE 3000
+# Copy entire dir
+COPY . ./app
 
 # Cmd script
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "prod"]
+
+# TODO: build instead for deployment
