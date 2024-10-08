@@ -20,7 +20,7 @@ export class CreateHousePostDto {
 
   @IsString()
   @IsNotEmpty()
-  public absolute_location?: string;
+  public absolute_location: string;
 
   @IsString()
   @IsOptional()
@@ -80,7 +80,7 @@ export class UpdateHousePostDto {
 
   @IsString()
   @IsOptional()
-  public absolute_location?: string;
+  public absolute_location: string;
 
   @IsString()
   @IsOptional()
