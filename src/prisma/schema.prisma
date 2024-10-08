@@ -30,8 +30,6 @@ model User {
 model HousePost {
   id Int @id @default(autoincrement())
   hostId Int
-  hostName String
-  hostProfileMedia String?
   houseType HouseType
   title String?
   description String
