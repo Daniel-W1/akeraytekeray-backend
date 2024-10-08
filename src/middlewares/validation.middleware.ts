@@ -39,13 +39,14 @@ export const QueryValidationMiddleware = (
   forbidNonWhitelisted = false,
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const dto = plainToInstance(type, req.query) as ParsedQs;
+    const dto = plainToInstance(type, req.query, { enableImplicitConversion: true}) as ParsedQs;
     validateOrReject(dto, { skipMissingProperties, whitelist, forbidNonWhitelisted })
-      .then(() => {
+    .then(() => {
         req.query = dto;
         next();
       })
       .catch((errors: ValidationError[]) => {
+        console.log("Validation error", errors);
         const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
         next(new HttpException(400, message));
       });

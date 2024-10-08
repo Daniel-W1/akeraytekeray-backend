@@ -32,7 +32,7 @@ export class HousePostRoute implements Routes {
       BodyValidationMiddleware(UpdateHousePostDto),
       this.housePost.updateHousePost
     );
-    this.router.post(
+    this.router.get(
       `${this.path}/nearby`,
       QueryValidationMiddleware(GetNearByHousesDto),
       this.housePost.getNearByHouses

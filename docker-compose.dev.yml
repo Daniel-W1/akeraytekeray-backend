@@ -32,7 +32,7 @@ services:
 
   postgresql:
     container_name: postgresql
-    image: postgres:alpine
+    image: postgis/postgis:17-3.4-alpine
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
