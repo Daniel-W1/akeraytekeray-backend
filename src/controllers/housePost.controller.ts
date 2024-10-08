@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { RequestWithUser } from '@interfaces/auth.interface';
-import { CreateHousePostDto, UpdateHousePostDto } from '@/dtos/housePost.dto';
+import { CreateHousePostDto, GetNearByHousesDto, UpdateHousePostDto } from '@/dtos/housePost.dto';
 import { HousePost } from '@/interfaces/housePost.interface';
 import { HousePostService } from '@/services/housePost.service';
+import { plainToInstance } from 'class-transformer';
 
 export class HousePostController {
   public housePost = Container.get(HousePostService);
@@ -69,6 +70,18 @@ export class HousePostController {
       const housePosts: HousePost[] = await this.housePost.getHousePostsByCategory(category);
 
       res.status(200).json({ data: housePosts, message: 'HousePosts retrieved successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getNearByHouses = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      // parse it into GetNearByHousesDto
+      const dto = plainToInstance(GetNearByHousesDto, req.query);
+      const houses = await this.housePost.getNearByHouses(dto);
+      
+      res.status(200).json({ data: houses, message: 'Nearby houses retrieved successfully' });
     } catch (error) {
       next(error);
     }

@@ -1,17 +1,10 @@
+import { HouseType } from '@prisma/client';
 import { IsString, IsOptional, IsNotEmpty, IsNumber, IsBoolean, IsArray } from 'class-validator';
 
 export class CreateHousePostDto {
   @IsNumber()
   @IsNotEmpty()
   public hostId: number;
-
-  @IsString()
-  @IsNotEmpty()
-  public hostName: string;
-
-  @IsString()
-  @IsOptional()
-  public hostProfileMedia: string;
 
   @IsString()
   @IsOptional()
@@ -65,7 +58,7 @@ export class CreateHousePostDto {
 
   @IsString()
   @IsNotEmpty()
-  public houseType: string;
+  public houseType: HouseType;
 
   @IsNumber()
   @IsNotEmpty()
@@ -134,4 +127,19 @@ export class UpdateHousePostDto {
   @IsNumber()
   @IsOptional()
   public house_size_sqm?: number;
+}
+
+// src/dtos/getNearByHouses.dto.ts
+export class GetNearByHousesDto {
+  @IsNumber()
+  @IsNotEmpty()
+  latitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  longitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  radius: number;
 }
