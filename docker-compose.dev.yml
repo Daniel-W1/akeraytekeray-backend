@@ -21,26 +21,28 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://root:password@mysqpl:3306/dev
+      DATABASE_URL: postgresql://root:password@postgresql:5432/dev
     volumes:
       - ./:/app
     restart: "unless-stopped"
     networks:
       - backend
-    links:
-      - mysql
     depends_on:
-      - mysql
+      - postgresql
 
-  mysql:
-    container_name: mysql
-    image: mysql:5.7
+  postgresql:
+    container_name: postgresql
+    image: postgres:alpine
     environment:
-      DATABASE_URL: mysql://root:password@localhost:3306/dev
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
     ports:
-      - "3306:3306"
+      - "5432:5432"
     networks:
       - backend
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
 networks:
   backend:
@@ -49,3 +51,4 @@ networks:
 volumes:
   data:
     driver: local
+  db_data:

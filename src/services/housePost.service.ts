@@ -1,18 +1,25 @@
 import { HouseType, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
-import { CreateHousePostDto, UpdateHousePostDto } from '@/dtos/housePost.dto';
+import { CreateHousePostDto, GetNearByHousesDto, UpdateHousePostDto } from '@/dtos/housePost.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { HousePost } from '@/interfaces/housePost.interface';
 
 @Service()
 export class HousePostService {
   public housePosts = new PrismaClient().housePost;
+  public prisma = new PrismaClient();
 
   public async createHousePost(housePostData: CreateHousePostDto): Promise<HousePost> {
+    // remove hostId
+    const { hostId, ...remHousePostData } = housePostData;
+    delete housePostData.hostId;
+
     const createHousePostData: Promise<HousePost> = this.housePosts.create({
       data: {
-        ...housePostData,
-        houseType: housePostData.houseType as HouseType
+        host: {
+          connect: { id: hostId }
+        },
+        ...remHousePostData
       }
     });
     return createHousePostData;
@@ -60,5 +67,17 @@ export class HousePostService {
 
     const housePosts: HousePost[] = await this.housePosts.findMany({ where: { houseType: category as HouseType } });
     return housePosts;
+  }
+
+  public async getNearByHouses(query: GetNearByHousesDto): Promise<HousePost[]> {
+    const { latitude, longitude, radius } = query;
+
+    const houses: HousePost[] = await this.prisma.$queryRaw`
+    SELECT *
+    FROM HousePost
+    WHERE ST_Distance_Sphere(ST_GeomFromText(absolute_location), ST_GeomFromText('POINT(${longitude} ${latitude})')) <= ${radius}
+  `;
+
+    return houses;
   }
 }

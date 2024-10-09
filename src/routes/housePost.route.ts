@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { HousePostController } from '@controllers/housePost.controller';
-import { CreateHousePostDto, UpdateHousePostDto } from '@dtos/housePost.dto';
+import { CreateHousePostDto, GetNearByHousesDto, UpdateHousePostDto } from '@dtos/housePost.dto';
 import { Routes } from '@interfaces/routes.interface';
 import { AuthMiddleware } from '@middlewares/auth.middleware';
 import { checkSimilarUser, RoleMiddleware } from '@/middlewares/housePost.middleware';
-import { ValidationMiddleware } from '@middlewares/validation.middleware';
+import { QueryValidationMiddleware, BodyValidationMiddleware } from '@middlewares/validation.middleware';
 
 export class HousePostRoute implements Routes {
   public path = '/houseposts';
@@ -21,7 +21,7 @@ export class HousePostRoute implements Routes {
       AuthMiddleware,
       RoleMiddleware(['host', 'admin']),
       checkSimilarUser(),
-      ValidationMiddleware(CreateHousePostDto),
+      BodyValidationMiddleware(CreateHousePostDto),
       this.housePost.createHousePost
     );
     this.router.put(
@@ -29,9 +29,10 @@ export class HousePostRoute implements Routes {
       AuthMiddleware,
       RoleMiddleware(['host', 'admin']),
       checkSimilarUser(),
-      ValidationMiddleware(UpdateHousePostDto),
+      BodyValidationMiddleware(UpdateHousePostDto),
       this.housePost.updateHousePost
     );
+    this.router.post(`${this.path}/nearby`, QueryValidationMiddleware(GetNearByHousesDto), this.housePost.getNearByHouses);
     this.router.get(`${this.path}/:id(\\d+)`, this.housePost.getHousePostById);
     this.router.get(`${this.path}`, this.housePost.getAllHousePosts);
     this.router.get(`${this.path}/category/:category`, this.housePost.getHousePostsByCategory);
