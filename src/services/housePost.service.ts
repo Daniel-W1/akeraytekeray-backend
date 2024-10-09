@@ -80,4 +80,4 @@ export class HousePostService {
 
     return houses;
   }
-};
+}
