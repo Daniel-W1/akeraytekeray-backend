@@ -7,14 +7,6 @@ export class CreateHousePostDto {
   public hostId: number;
 
   @IsString()
-  @IsNotEmpty()
-  public hostName: string;
-
-  @IsString()
-  @IsOptional()
-  public hostProfileMedia: string;
-
-  @IsString()
   @IsOptional()
   public title?: string;
 
