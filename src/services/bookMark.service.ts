@@ -1,0 +1,39 @@
+import { PrismaClient } from '@prisma/client';
+import { Service } from 'typedi';
+import { CreateBookmarkDto } from '@/dtos/bookMark.dto';
+import { HttpException } from '@exceptions/HttpException';
+import { Bookmark } from '@/interfaces/bookMark.interface';
+
+@Service()
+export class BookmarkService {
+  public bookmarks = new PrismaClient().bookmark;
+
+  public async createBookmark(bookmarkData: CreateBookmarkDto): Promise<Bookmark> {
+    const { userId, housePostId } = bookmarkData;
+
+    const createBookmarkData: Promise<Bookmark> = this.bookmarks.create({
+      data: {
+        user: {
+          connect: { id: userId }
+        },
+        housePost: {
+          connect: { id: housePostId }
+        }
+      }
+    });
+    return createBookmarkData;
+  }
+
+  public async deleteBookmark(bookmarkId: number): Promise<Bookmark> {
+    const findBookmark: Bookmark = await this.bookmarks.findUnique({ where: { id: bookmarkId } });
+    if (!findBookmark) throw new HttpException(404, `Bookmark with id ${bookmarkId} not found`);
+
+    const deleteBookmarkData: Promise<Bookmark> = this.bookmarks.delete({ where: { id: bookmarkId } });
+    return deleteBookmarkData;
+  }
+
+  public async getUsersBookmarks(userId: number): Promise<Bookmark[]> {
+    const bookmarks: Bookmark[] = await this.bookmarks.findMany({ where: { userId } });
+    return bookmarks;
+  }
+}
