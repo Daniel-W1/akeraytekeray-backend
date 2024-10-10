@@ -145,7 +145,7 @@ export class HousePostService {
 
   public async getNearByHouses(query: GetNearByHousesDto): Promise<HousePost[]> {
     const { latitude, longitude, radius } = query;
-  
+
     const houses: HousePost[] = await this.prisma.$queryRaw<HousePost[]>`
       SELECT *
       FROM "HousePost"
@@ -154,8 +154,7 @@ export class HousePostService {
         ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)
       ) <= ${radius}
     `;
-  
-      console.log("returning", houses)
+
     return houses;
   }
 }

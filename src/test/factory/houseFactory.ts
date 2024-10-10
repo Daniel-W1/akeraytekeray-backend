@@ -1,12 +1,12 @@
 // test/utils/prismaUtils.js
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient().housePost;
 
 // Function to create a house in the database
-export const createHouse = async (houseData) => {
+export const createHouse = async houseData => {
   return await prisma.create({
-    data: houseData,
+    data: houseData
   });
 };
 

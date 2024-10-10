@@ -12,12 +12,7 @@ import { ParsedQs } from 'qs';
  * @param whitelist Even if your object is an instance of a validation class it can contain additional properties that are not defined
  * @param forbidNonWhitelisted If you would rather to have an error thrown when any non-whitelisted properties are present
  */
-export const BodyValidationMiddleware = (
-  type: any,
-  skipMissingProperties = false,
-  whitelist = false,
-  forbidNonWhitelisted = false,
-) => {
+export const BodyValidationMiddleware = (type: any, skipMissingProperties = false, whitelist = false, forbidNonWhitelisted = false) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const dto = plainToInstance(type, req.body);
     validateOrReject(dto, { skipMissingProperties, whitelist, forbidNonWhitelisted })
@@ -32,23 +27,18 @@ export const BodyValidationMiddleware = (
   };
 };
 
-export const QueryValidationMiddleware = (
-  type: any,
-  skipMissingProperties = false,
-  whitelist = false,
-  forbidNonWhitelisted = false,
-) => {
+export const QueryValidationMiddleware = (type: any, skipMissingProperties = false, whitelist = false, forbidNonWhitelisted = false) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const dto = plainToInstance(type, req.query, { enableImplicitConversion: true}) as ParsedQs;
+    const dto = plainToInstance(type, req.query, { enableImplicitConversion: true }) as ParsedQs;
     validateOrReject(dto, { skipMissingProperties, whitelist, forbidNonWhitelisted })
-    .then(() => {
+      .then(() => {
         req.query = dto;
         next();
       })
       .catch((errors: ValidationError[]) => {
-        console.log("Validation error", errors);
+        console.log('Validation error', errors);
         const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
         next(new HttpException(400, message));
       });
-  }
-}
+  };
+};

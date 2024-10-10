@@ -32,11 +32,7 @@ export class HousePostRoute implements Routes {
       BodyValidationMiddleware(UpdateHousePostDto),
       this.housePost.updateHousePost
     );
-    this.router.get(
-      `${this.path}/nearby`,
-      QueryValidationMiddleware(GetNearByHousesDto),
-      this.housePost.getNearByHouses
-    );
+    this.router.get(`${this.path}/nearby`, QueryValidationMiddleware(GetNearByHousesDto), this.housePost.getNearByHouses);
     this.router.get(`${this.path}/:id(\\d+)`, this.housePost.getHousePostById);
     this.router.get(`${this.path}`, this.housePost.getAllHousePosts);
     this.router.get(`${this.path}/category/:category`, this.housePost.getHousePostsByCategory);

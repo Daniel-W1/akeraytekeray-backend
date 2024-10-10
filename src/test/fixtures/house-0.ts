@@ -5,7 +5,7 @@ export const createHousePostFixture = (overrides: any = {}): CreateHousePostDto 
   if (!('hostId' in overrides)) {
     throw new Error('hostId is required');
   }
-  
+
   return {
     title: 'Test House',
     description: 'A nice place to stay',
