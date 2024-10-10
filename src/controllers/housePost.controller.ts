@@ -80,7 +80,7 @@ export class HousePostController {
       // parse it into GetNearByHousesDto
       const dto = plainToInstance(GetNearByHousesDto, req.query);
       const houses = await this.housePost.getNearByHouses(dto);
-      
+
       res.status(200).json({ data: houses, message: 'Nearby houses retrieved successfully' });
     } catch (error) {
       next(error);

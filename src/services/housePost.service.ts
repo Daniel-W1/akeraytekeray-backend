@@ -10,7 +10,6 @@ export class HousePostService {
   public prisma = new PrismaClient();
 
   public async createHousePost(housePostData: CreateHousePostDto): Promise<HousePost> {
-    // remove hostId
     const { hostId, ...remHousePostData } = housePostData;
     delete housePostData.hostId;
 
@@ -26,17 +25,48 @@ export class HousePostService {
   }
 
   public async getHousePostById(housePostId: number): Promise<HousePost> {
-    const findHousePost: HousePost = await this.housePosts.findUnique({ where: { id: housePostId } });
+    const findHousePost: HousePost = await this.housePosts.findUnique({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      },
+      where: { id: housePostId }
+    });
     if (!findHousePost) throw new HttpException(404, `HousePost with id ${housePostId} not found`);
 
     return findHousePost;
   }
 
   public async updateHousePost(housePostId: number, housePostData: UpdateHousePostDto): Promise<HousePost> {
-    const findHousePost: HousePost = await this.housePosts.findUnique({ where: { id: housePostId } });
+    const findHousePost: HousePost = await this.housePosts.findUnique({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      },
+      where: { id: housePostId }
+    });
     if (!findHousePost) throw new HttpException(404, `HousePost with id ${housePostId} not found`);
 
     const updateHousePostData: Promise<HousePost> = this.housePosts.update({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      },
       where: { id: housePostId },
       data: { ...housePostData, houseType: housePostData.houseType as HouseType }
     });
@@ -45,7 +75,18 @@ export class HousePostService {
   }
 
   public async deleteHousePost(housePostId: number): Promise<HousePost> {
-    const findHousePost: HousePost = await this.housePosts.findUnique({ where: { id: housePostId } });
+    const findHousePost: HousePost = await this.housePosts.findUnique({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      },
+      where: { id: housePostId }
+    });
     if (!findHousePost) throw new HttpException(404, `HousePost with id ${housePostId} not found`);
 
     const deleteHousePostData: Promise<HousePost> = this.housePosts.delete({ where: { id: housePostId } });
@@ -53,7 +94,17 @@ export class HousePostService {
   }
 
   public async getAllHousePosts(): Promise<HousePost[]> {
-    const housePosts: HousePost[] = await this.housePosts.findMany();
+    const housePosts: HousePost[] = await this.housePosts.findMany({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      }
+    });
     return housePosts;
   }
 
@@ -61,11 +112,34 @@ export class HousePostService {
     // TODO: implement proper trending
     if (category === 'TRENDING') {
       // take only 5 posts
-      const housePosts: HousePost[] = await this.housePosts.findMany({ orderBy: { createdAt: 'desc' }, take: 5 });
+      const housePosts: HousePost[] = await this.housePosts.findMany({
+        include: {
+          host: {
+            select: {
+              id: true,
+              firstname: true,
+              lastname: true
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 5
+      });
       return housePosts;
     }
 
-    const housePosts: HousePost[] = await this.housePosts.findMany({ where: { houseType: category as HouseType } });
+    const housePosts: HousePost[] = await this.housePosts.findMany({
+      include: {
+        host: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true
+          }
+        }
+      },
+      where: { houseType: category as HouseType }
+    });
     return housePosts;
   }
 
@@ -84,4 +158,4 @@ export class HousePostService {
       console.log("returning", houses)
     return houses;
   }
-};
+}
