@@ -1,8 +1,6 @@
 export interface HousePost {
   id?: number;
   hostId: number;
-  hostName: string;
-  hostProfileMedia?: string;
   title?: string;
   description: string;
   street_address: string;
