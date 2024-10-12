@@ -36,7 +36,7 @@ jobs:
           - 5432:5432
     env:
       CI: true
-      ENVIROMENT: test
+      ENVIRONMENT: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
     steps:
       - name: Checkout code
