@@ -146,11 +146,14 @@ export class HousePostService {
   public async getNearByHouses(query: GetNearByHousesDto): Promise<HousePost[]> {
     const { latitude, longitude, radius } = query;
 
-    const houses: HousePost[] = await this.prisma.$queryRaw`
-    SELECT *
-    FROM HousePost
-    WHERE ST_Distance_Sphere(ST_GeomFromText(absolute_location), ST_GeomFromText('POINT(${longitude} ${latitude})')) <= ${radius}
-  `;
+    const houses: HousePost[] = await this.prisma.$queryRaw<HousePost[]>`
+      SELECT *
+      FROM "HousePost"
+      WHERE ST_DistanceSphere(
+        ST_GeomFromText(absolute_location, 4326),
+        ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)
+      ) <= ${radius}
+    `;
 
     return houses;
   }

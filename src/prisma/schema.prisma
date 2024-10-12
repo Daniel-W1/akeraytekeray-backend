@@ -4,10 +4,12 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  extensions = [hstore(), pg_trgm, postgis()]
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 model User {
