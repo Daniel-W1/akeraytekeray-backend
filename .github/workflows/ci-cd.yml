@@ -48,7 +48,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Wait for PostgreSQL to start
         run: |
