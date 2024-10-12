@@ -87,17 +87,7 @@ jobs:
       ENVIRONMENT: prod
       # DATABASE_URL is a secret
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
+      # TODO: add in the future
       - name: Deploy to Server
         run: |
           echo "Deploying application..."
