@@ -21,10 +21,9 @@ export class BookmarkController {
 
   public deleteBookmark = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user.id;
-      const housePostId = Number(req.params.housePostId);
+      const bookMarkId = Number(req.params.id);
 
-      const deletedBookmark: Bookmark = await this.bookmark.deleteBookmark(userId, housePostId);
+      const deletedBookmark: Bookmark = await this.bookmark.deleteBookmark(bookMarkId);
 
       res.status(200).json({ data: deletedBookmark, message: 'Bookmark deleted successfully' });
     } catch (error) {

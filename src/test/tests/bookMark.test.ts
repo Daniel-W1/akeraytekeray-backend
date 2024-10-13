@@ -97,9 +97,9 @@ describe('Testing Bookmarks route', () => {
         userId: createdUser.id,
         housePostId: createdHouse.id
       });
-      await createBookmark(bookmarkData);
+      const createdBookmark = await createBookmark(bookmarkData);
 
-      const response = await request(app).delete(`/bookmarks/${createdHouse.id}`).set('Authorization', `Bearer ${authToken}`);
+      const response = await request(app).delete(`/bookmarks/${createdBookmark.id}`).set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Bookmark deleted successfully');

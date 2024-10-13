@@ -24,11 +24,11 @@ export class BookmarkService {
     return createBookmarkData;
   }
 
-  public async deleteBookmark(userId: number, housePostId: number): Promise<Bookmark> {
-    const findBookmark: Bookmark = await this.bookmarks.findUnique({ where: { userId_housePostId: { userId, housePostId } } });
-    if (!findBookmark) throw new HttpException(404, `Bookmark with userId ${userId} and housePostId ${housePostId} not found`);
+  public async deleteBookmark(bookMarkId: number): Promise<Bookmark> {
+    const findBookmark: Bookmark = await this.bookmarks.findUnique({ where: { id: bookMarkId } });
+    if (!findBookmark) throw new HttpException(404, `Bookmark with id ${bookMarkId} not found`);
 
-    const deleteBookmarkData: Promise<Bookmark> = this.bookmarks.delete({ where: { userId_housePostId: { userId, housePostId } } });
+    const deleteBookmarkData: Promise<Bookmark> = this.bookmarks.delete({ where: { id: bookMarkId } });
     return deleteBookmarkData;
   }
 
@@ -37,8 +37,8 @@ export class BookmarkService {
     return bookmarks;
   }
 
-  public async checkHousePostIsBookmarked(userId: number, housePostId: number): Promise<boolean> {
-    const isBookmarked = await this.bookmarks.findFirst({ where: { userId, housePostId } });
-    return !!isBookmarked;
+  public async checkHousePostIsBookmarked(userId: number, housePostId: number): Promise<Bookmark | null> {
+    const isBookmarked: Bookmark | null = await this.bookmarks.findFirst({ where: { userId, housePostId } });
+    return isBookmarked;
   }
 }

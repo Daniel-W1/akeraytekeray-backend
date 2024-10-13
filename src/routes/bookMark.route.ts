@@ -24,6 +24,6 @@ export class BookmarkRoute implements Routes {
     );
     this.router.get(`${this.path}`, AuthMiddleware, this.bookmark.getUserBookmarks);
     this.router.get(`${this.path}/:housePostId(\\d+)`, AuthMiddleware, this.bookmark.checkHousePostIsBookmarked);
-    this.router.delete(`${this.path}/:housePostId(\\d+)`, AuthMiddleware, this.bookmark.deleteBookmark);
+    this.router.delete(`${this.path}/:id(\\d+)`, AuthMiddleware, this.bookmark.deleteBookmark);
   }
 }
