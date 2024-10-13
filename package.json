@@ -9,7 +9,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
     "build:tsc": "tsc && tsc-alias",
-    "test": "npx prisma migrate deploy &&  jest --forceExit --detectOpenHandles",
+    "test": "npx prisma generate && npx prisma migrate deploy &&  jest --forceExit --detectOpenHandles",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
     "prisma:init": "prisma init",
