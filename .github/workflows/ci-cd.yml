@@ -38,6 +38,7 @@ jobs:
       CI: true
       ENVIRONMENT: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -56,6 +57,9 @@ jobs:
             echo "Waiting for DB to start..."
           done
           echo "DB is ready to accept requests!"
+
+      - name: Echo SECRET_KEY
+        run: echo "SECRET_KEY is ${{ secrets.SECRET_KEY }}"
 
       - name: Run Tests
         run: npm run test
